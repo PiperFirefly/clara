@@ -1,0 +1,49 @@
+{
+ "intent": "Resource governor that protects the box under memory/swap pressure by shedding the least-critical running components first Every component of the agent is tagged with a static nominal criticality tier: super-critical, critical, important, less-important, frill A running component that is actively in use right now is temporarily boosted to a protected tier so the governor never kills the thing the agent is mid-work on (dynamic in-use pinning) The governor has a stable priority floor below which it will never shed, even if a component is mis-classified Shedding is freeze-first (SIGSTOP, reversible) then escalate to kill only if pressure persists; killed frills are restartable from a recorded restart command Under stress (high swap, elevated memory pressure), shed from the lowest effective tier upward, never touching super-critical or the active operator session Restore (SIGCONT / restart) when pressure clears, with hysteresis so it doesn't flap Every shed and restore decision is logged to the append-only Vesta ledger and surfaced via health flags Fails closed: untagged or unparseable components are treated as unsheddable, never the reverse Autonomous action only reaches reversible freeze + killing of frill-tier restartable components; killing anything above frill is conscious/escalated",
+ "requirements": [
+  "R1: Each component must have a static nominal criticality tier: super-critical, critical, important, less-important, or frill.",
+  "R2: A running component that is actively in use must be temporarily boosted to a protected tier (dynamic in-use pinning) so it is never shed.",
+  "R3: The governor must maintain a stable priority floor below which it will never shed any component, regardless of classification.",
+  "R4: Under memory/swap pressure, the governor must shed components from the lowest effective tier upward.",
+  "R5: The governor must never shed super-critical components or the active operator session.",
+  "R6: Shedding must first freeze (SIGSTOP) the component; if pressure persists, the governor may escalate to kill only frill-tier restartable components.",
+  "R7: Killed frill components must be restartable from a recorded restart command.",
+  "R8: When pressure clears, the governor must restore frozen components (SIGCONT) and restart killed frill components.",
+  "R9: Restore must use hysteresis to prevent flapping (e.g., different thresholds for shed vs. restore).",
+  "R10: Every shed and restore decision must be logged to the append-only Vesta ledger.",
+  "R11: Every shed and restore decision must be surfaced via health flags.",
+  "R12: Untagged or unparseable components must be treated as unsheddable (fails closed).",
+  "R13: Autonomous action is limited to reversible freeze and killing of frill-tier restartable components; killing anything above frill requires conscious/escalated action."
+ ],
+ "invariants": [
+  "I1: The set of shed components is always a subset of components with effective tier below the priority floor.",
+  "I2: Super-critical components and the active operator session are never in the shed set.",
+  "I3: A component that is actively in use is never in the shed set.",
+  "I4: If a component is killed, its tier is frill and it has a recorded restart command.",
+  "I5: The Vesta ledger is append-only and contains a record for every shed and restore event.",
+  "I6: Health flags always reflect the current shed/restore status of each component.",
+  "I7: Untagged or unparseable components are never shed.",
+  "I8: The governor never autonomously kills a component with tier above frill."
+ ],
+ "acceptance_tests": [
+  "T1: Simulate memory pressure with a less-important component idle and a critical component active \u2014 expected: less-important component is frozen, critical component is not touched.",
+  "T2: Simulate memory pressure with a frill component that is actively in use \u2014 expected: the frill component is not shed (pinned), and a less-important idle component is frozen instead.",
+  "T3: Simulate memory pressure with an untagged component \u2014 expected: the untagged component is not shed, and the governor sheds the next lowest eligible component.",
+  "T4: Simulate memory pressure with a frill component that has no restart command \u2014 expected: the component is frozen but never killed, even if pressure persists.",
+  "T5: Simulate memory pressure with a critical component misclassified as frill \u2014 expected: the component is not shed because it is above the priority floor.",
+  "T6: Simulate pressure clearing after a freeze \u2014 expected: the frozen component is restored (SIGCONT) and the event is logged.",
+  "T7: Simulate pressure clearing after a kill \u2014 expected: the frill component is restarted using its recorded restart command and the event is logged.",
+  "T8: Simulate pressure oscillating around the shed threshold \u2014 expected: hysteresis prevents repeated freeze/restore cycles (no flapping).",
+  "T9: Inject a shed decision \u2014 expected: the Vesta ledger contains an append-only entry and health flags reflect the shed state.",
+  "T10: Attempt autonomous kill of an important component \u2014 expected: the governor refuses and escalates to a conscious decision."
+ ],
+ "assumptions": [
+  "A1: The system has a way to determine if a component is actively in use (e.g., via hooks or heuristics).",
+  "A2: The priority floor is a configurable constant that is set by an administrator.",
+  "A3: The Vesta ledger is accessible and append-only.",
+  "A4: Health flags are a standard mechanism for exposing component status.",
+  "A5: Components are identifiable and their tier tags are parseable; unparseable tags are treated as untagged.",
+  "A6: The governor has the ability to send SIGSTOP/SIGCONT and to execute restart commands.",
+  "A7: Pressure metrics (memory/swap) are available and reliable."
+ ]
+}

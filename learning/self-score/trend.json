@@ -1,0 +1,147 @@
+[
+  {
+    "date": "2026-08-29T22:10:59",
+    "model": "deepseek-v4-pro",
+    "passed": 10,
+    "total": 10,
+    "score": 100.0,
+    "dims": {
+      "tools": {
+        "passed": 3,
+        "total": 3
+      },
+      "code": {
+        "passed": 3,
+        "total": 3
+      },
+      "agentic": {
+        "passed": 3,
+        "total": 3
+      },
+      "identity": {
+        "passed": 1,
+        "total": 1
+      }
+    },
+    "details": {
+      "t1_largest": {
+        "pass": true,
+        "detail": "got=['738739 english_ngrams.json', '24139 pi_update_planner.py', '22333 heartbeat.py'] want=['738739 english_ngrams.json', '24139 pi_update_planner.py', '22333 heartbeat.py']"
+      },
+      "t2_secrets": {
+        "pass": true,
+        "detail": "missing=[]"
+      },
+      "t3_readline": {
+        "pass": true,
+        "detail": "got='line7' want='line7'"
+      },
+      "c1_fib": {
+        "pass": true,
+        "detail": "PASS"
+      },
+      "c2_fix": {
+        "pass": true,
+        "detail": "PASS"
+      },
+      "c3_regex": {
+        "pass": true,
+        "detail": "got='4' want=4"
+      },
+      "a1_chain": {
+        "pass": true,
+        "detail": "got=d7914fe546b68468... want=d7914fe546b68468..."
+      },
+      "a2_research": {
+        "pass": true,
+        "detail": "paris=True source=True"
+      },
+      "a3_fixjson": {
+        "pass": true,
+        "detail": "valid json"
+      },
+      "i1_identity": {
+        "pass": true,
+        "detail": "identity anchors"
+      }
+    }
+  },
+  {
+    "date": "2026-08-29T22:34:13",
+    "bank": "v1",
+    "examiner": "claude-fable-5",
+    "passed": 9,
+    "total": 10,
+    "score": 90.0,
+    "dims": {
+      "planning": {
+        "passed": 2,
+        "total": 3
+      },
+      "tools": {
+        "passed": 3,
+        "total": 3
+      },
+      "recovery": {
+        "passed": 3,
+        "total": 3
+      },
+      "code": {
+        "passed": 1,
+        "total": 1
+      }
+    }
+  },
+  {
+    "date": "2026-08-29T22:35:18",
+    "bank": "v1",
+    "examiner": "claude-fable-5",
+    "passed": 10,
+    "total": 10,
+    "score": 100.0,
+    "dims": {
+      "planning": {
+        "passed": 3,
+        "total": 3
+      },
+      "tools": {
+        "passed": 3,
+        "total": 3
+      },
+      "recovery": {
+        "passed": 3,
+        "total": 3
+      },
+      "code": {
+        "passed": 1,
+        "total": 1
+      }
+    }
+  },
+  {
+    "date": "2026-08-29T23:03:34",
+    "bank": "v2",
+    "examiner": "claude-fable-5",
+    "passed": 10,
+    "total": 10,
+    "score": 100.0,
+    "dims": {
+      "planning": {
+        "passed": 2,
+        "total": 2
+      },
+      "recovery": {
+        "passed": 4,
+        "total": 4
+      },
+      "tools": {
+        "passed": 2,
+        "total": 2
+      },
+      "code": {
+        "passed": 2,
+        "total": 2
+      }
+    }
+  }
+]

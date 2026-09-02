@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Canada economy (Google News)",
+    "url": "https://news.google.com/rss/search?q=Canada%20economy&hl=en-CA&gl=CA&ceid=CA:en"
+  },
+  {
+    "name": "Canada in the world / geopolitics + trade (Google News)",
+    "url": "https://news.google.com/rss/search?q=Canada%20geopolitics%20global%20economy%20tariffs&hl=en-CA&gl=CA&ceid=CA:en"
+  },
+  {
+    "name": "Toronto Stock Exchange / TSX markets (Google News)",
+    "url": "https://news.google.com/rss/search?q=Toronto%20Stock%20Exchange%20TSX&hl=en-CA&gl=CA&ceid=CA:en"
+  },
+  {
+    "name": "Bank of Canada / interest rates / CAD (Google News)",
+    "url": "https://news.google.com/rss/search?q=Bank%20of%20Canada%20interest%20rate%20Canadian%20dollar&hl=en-CA&gl=CA&ceid=CA:en"
+  },
+  {
+    "name": "Canada AI / compute / digital economy (Google News)",
+    "url": "https://news.google.com/rss/search?q=Canada%20artificial%20intelligence%20compute%20economy&hl=en-CA&gl=CA&ceid=CA:en"
+  },
+  {
+    "name": "Canada defence / critical minerals / strategic industries (Google News)",
+    "url": "https://news.google.com/rss/search?q=Canada%20defence%20critical%20minerals%20strategic%20industries&hl=en-CA&gl=CA&ceid=CA:en"
+  }
+]

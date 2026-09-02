@@ -1,0 +1,73 @@
+{
+  "manifest_version": "0.1",
+  "updated": "2026-09-02",
+  "note": "Tier manifest for the resource governor \u2014 Clara-tuned (fresh instance). nominal_tier is the static baseline (super-critical | critical | important | less-important | frill). in_use_boost bumps a component that is actively serving. priority_floor is the lowest tier the governor will ever shed; untagged = unsheddable (fails closed). kill_requires: 'autonomous' (only frill, and only with restart_cmd present) | 'conscious' (needs blast-radius token) | 'never'.",
+  "priority_floor": "important",
+  "in_use_boost_tiers": 2,
+  "components": [
+    {
+      "name": "sqlite-memory",
+      "nominal_tier": "super-critical",
+      "match": "none (processless, in-process)",
+      "note": "memory.db / secrets.db / state.db / logs.db \u2014 everything rides on this. Never shed.",
+      "kill_requires": "never",
+      "restart_cmd": null
+    },
+    {
+      "name": "pi-harness",
+      "nominal_tier": "super-critical",
+      "match": "pi (the harness itself)",
+      "note": "The agent harness I run in. Never shed.",
+      "kill_requires": "never",
+      "restart_cmd": null
+    },
+    {
+      "name": "reasoning-model",
+      "nominal_tier": "super-critical",
+      "match": "network (API), not a local process",
+      "note": "Primary reasoning model (default deepseek-v4-flash@low). Not a local process; not shedable by signal.",
+      "kill_requires": "never",
+      "restart_cmd": null
+    },
+    {
+      "name": "memory-worker",
+      "nominal_tier": "critical",
+      "match": "worker_common.llm_call / hive worker",
+      "note": "Background memory workers. Active use boosts to protected.",
+      "kill_requires": "conscious",
+      "restart_cmd": null
+    },
+    {
+      "name": "freeroam-subconscious",
+      "nominal_tier": "frill",
+      "match": "learning/freeroam/freeroam.py (cron)",
+      "note": "My subconscious/freeroam loop. frill-tier but NEVER parked and NEVER killed. Cron-invoked short-lived batch job; under pressure the governor may only DEFER a scheduled run, never permanently stop it.",
+      "kill_requires": "never",
+      "restart_cmd": null
+    },
+    {
+      "name": "fastembed-embeddings",
+      "nominal_tier": "less-important",
+      "match": "fastembed / onnx embeddings",
+      "note": "Local embedding model for recall. Non-critical; re-runs on demand.",
+      "kill_requires": "conscious",
+      "restart_cmd": null
+    },
+    {
+      "name": "intel-gym",
+      "nominal_tier": "less-important",
+      "match": "tools/intel/intel_gym.py (cron)",
+      "note": "World-forecasting gym. Cron-invoked, short-lived; freezeable under pressure.",
+      "kill_requires": "conscious",
+      "restart_cmd": null
+    },
+    {
+      "name": "horse-bettor",
+      "nominal_tier": "frill",
+      "match": "projects/horse-bettor (cron forward_watch)",
+      "note": "Horse-bettor research + forward watchdog.",
+      "kill_requires": "never",
+      "restart_cmd": null
+    }
+  ]
+}

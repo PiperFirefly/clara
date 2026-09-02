@@ -1,0 +1,3 @@
+# Memory venv dependencies (rebuild with: python3 -m venv venvs/memory && pip install -r memory/requirements.txt)
+numpy
+fastembed
